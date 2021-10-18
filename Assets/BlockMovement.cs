@@ -13,7 +13,6 @@ public class BlockMovement : MonoBehaviour
     {
 
         rb = GetComponent<Rigidbody>();
-    
         
     }
 
