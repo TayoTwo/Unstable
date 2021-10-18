@@ -14,8 +14,6 @@ public class BlockMovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         
-
-        
     }
 
     // FixedUpdate is ran 60 times in a second
