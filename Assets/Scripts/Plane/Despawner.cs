@@ -5,16 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class Despawner : MonoBehaviour
 {
-    void OnTriggerEnter(Collider collider){
+    void OnCollisionEnter(Collision collider){
 
-        if(collider.tag == "Player"){
+        if(collider.gameObject.tag != "Player"){
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
-        } else {
-
-            Destroy(collider.gameObject);
-            
         }
 
 

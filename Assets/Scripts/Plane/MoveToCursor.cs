@@ -36,7 +36,7 @@ public class MoveToCursor : MonoBehaviour
     void CursorLook(){
 
         cursorPos = Input.mousePosition;
-        cursorPos.z = 10.0f;
+        cursorPos.z = Mathf.Abs(Camera.main.transform.position.z);
         cursorPos = Camera.main.ScreenToWorldPoint(cursorPos);
 
         transform.LookAt(cursorPos);

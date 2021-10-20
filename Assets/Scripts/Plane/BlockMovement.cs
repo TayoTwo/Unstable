@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BlockMovement : MonoBehaviour
 {
@@ -24,5 +25,16 @@ public class BlockMovement : MonoBehaviour
 
         rb.velocity = Vector3.left * movSpeed;
         
+    }
+
+    void OnCollisionEnter(Collision collider){
+
+        if(collider.gameObject.tag == "Player"){
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        }
+
+
     }
 }
