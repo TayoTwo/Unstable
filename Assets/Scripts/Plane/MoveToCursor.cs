@@ -5,7 +5,12 @@ using UnityEngine;
 public class MoveToCursor : MonoBehaviour
 {
 
-    public float cursorPullStrength;
+    public float thrust;
+    public float torque;
+
+    
+    public float idealDis;
+    public Transform target;
     Vector3 cursorPos;
     Vector3 targetPos;
     Vector3 forceDir;
@@ -20,35 +25,51 @@ public class MoveToCursor : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update(){
-
-        CursorLook();
-        
-    }
-
     void FixedUpdate() {
         
         Move();
+        RotateToCursor();
 
     }
 
-    void CursorLook(){
+    void RotateToCursor(){
 
-        cursorPos = Input.mousePosition;
-        cursorPos.z = Mathf.Abs(Camera.main.transform.position.z);
-        cursorPos = Camera.main.ScreenToWorldPoint(cursorPos);
+        // cursorPos = Input.mousePosition;
+        // cursorPos.z = Mathf.Abs(Camera.main.transform.position.z);
+        // cursorPos = Camera.main.ScreenToWorldPoint(cursorPos);
 
-        transform.LookAt(cursorPos);
+        // Vector3.AngleBetween(transform.for);
+
+        // rb.AddTorque(transform.right * torque );
+        // transform.LookAt(cursorPos);
 
     }
 
     void Move(){
 
-        targetPos = new Vector3(0,cursorPos.y,0);
+
+        //
+        targetPos = new Vector3(cursorPos.x,transform.position.y,cursorPos.z);
         forceDir = (targetPos - transform.position).normalized;
 
-        rb.AddForce(transform.forward * cursorPullStrength);
+        float strength;
+        float dis = Vector3.Distance(targetPos,transform.position);
+
+        if(dis < idealDis){
+
+            strength = Vector3.Distance(targetPos,transform.position) / idealDis;
+            Debug.DrawLine(transform.position,cursorPos,Color.green);
+
+        } else {
+
+            strength = 1f;
+            Debug.DrawLine(transform.position,cursorPos,Color.red);
+
+        }
+        
+        Debug.Log(strength);
+
+        rb.AddForce(transform.forward * thrust * strength,ForceMode.VelocityChange);
 
     }
 }
