@@ -6,7 +6,7 @@ public class MoveToCursor : MonoBehaviour
 {
 
     public float thrust;
-    public float torque;
+    public float rotSpeed;
 
     
     public float idealDis;
@@ -25,6 +25,14 @@ public class MoveToCursor : MonoBehaviour
         
     }
 
+    void Update() {
+
+        cursorPos = Input.mousePosition;
+        cursorPos.z = Mathf.Abs(Camera.main.transform.position.z);
+        cursorPos = Camera.main.ScreenToWorldPoint(cursorPos);
+        
+    }
+
     void FixedUpdate() {
         
         Move();
@@ -34,14 +42,14 @@ public class MoveToCursor : MonoBehaviour
 
     void RotateToCursor(){
 
-        // cursorPos = Input.mousePosition;
-        // cursorPos.z = Mathf.Abs(Camera.main.transform.position.z);
-        // cursorPos = Camera.main.ScreenToWorldPoint(cursorPos);
+        // // The step size is equal to speed times frame time.
 
-        // Vector3.AngleBetween(transform.for);
 
-        // rb.AddTorque(transform.right * torque );
-        // transform.LookAt(cursorPos);
+        // // Draw a ray pointing at our target in
+        // Debug.DrawRay(transform.position, dir, Color.red);
+
+        // // // Calculate a rotation a step closer to the target and applies rotation to this object
+        // // transform.rotation = Quaternion.LookRotation(dir);
 
     }
 
@@ -54,6 +62,7 @@ public class MoveToCursor : MonoBehaviour
 
         float strength;
         float dis = Vector3.Distance(targetPos,transform.position);
+        float singleStep = rotSpeed * Time.fixedDeltaTime;
 
         if(dis < idealDis){
 
@@ -69,7 +78,10 @@ public class MoveToCursor : MonoBehaviour
         
         Debug.Log(strength);
 
-        rb.AddForce(transform.forward * thrust * strength,ForceMode.VelocityChange);
+
+        Vector3 dir = Vector3.RotateTowards(transform.forward,target.forward,singleStep,0.0f);
+
+        rb.AddForce(dir * thrust * strength,ForceMode.VelocityChange);
 
     }
 }
