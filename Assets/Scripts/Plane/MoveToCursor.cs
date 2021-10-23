@@ -10,10 +10,11 @@ public class MoveToCursor : MonoBehaviour
 
     
     public float idealDis;
-    public Transform target;
+    //public Transform target;
     Vector3 cursorPos;
     Vector3 targetPos;
-    Vector3 forceDir;
+
+    Vector3 dir;
 
     Rigidbody rb;
 
@@ -28,8 +29,9 @@ public class MoveToCursor : MonoBehaviour
     void Update() {
 
         cursorPos = Input.mousePosition;
-        cursorPos.z = Mathf.Abs(Camera.main.transform.position.z);
+        cursorPos.z = Camera.main.transform.position.y;
         cursorPos = Camera.main.ScreenToWorldPoint(cursorPos);
+        targetPos = new Vector3(cursorPos.x,transform.position.y,cursorPos.z);
         
     }
 
@@ -43,45 +45,50 @@ public class MoveToCursor : MonoBehaviour
     void RotateToCursor(){
 
         // // The step size is equal to speed times frame time.
+        
+        // float singleStep = rotSpeed * Time.fixedDeltaTime;
+        // Vector3 dir = Vector3.RotateTowards(transform.forward,target.forward,singleStep,0.0f);
 
+        // Draw a ray pointing at our target in
+        //Debug.DrawRay(transform.position, dir, Color.red);
 
-        // // Draw a ray pointing at our target in
-        // Debug.DrawRay(transform.position, dir, Color.red);
+        // Calculate a rotation a step closer to the target and applies rotation to this object
+        
+        dir = targetPos - transform.position;
 
-        // // // Calculate a rotation a step closer to the target and applies rotation to this object
-        // // transform.rotation = Quaternion.LookRotation(dir);
+        Debug.Log(targetPos);
+        
+        // calculate the Quaternion for the rotation
+        Quaternion rot = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), rotSpeed * Time.fixedDeltaTime);
+ 
+        //Apply the rotation 
+        transform.rotation = rot; 
+
+        transform.eulerAngles = new Vector3(0,transform.eulerAngles.y,0);
 
     }
 
     void Move(){
 
-
-        //
-        targetPos = new Vector3(cursorPos.x,transform.position.y,cursorPos.z);
-        forceDir = (targetPos - transform.position).normalized;
-
         float strength;
         float dis = Vector3.Distance(targetPos,transform.position);
-        float singleStep = rotSpeed * Time.fixedDeltaTime;
 
         if(dis < idealDis){
 
             strength = Vector3.Distance(targetPos,transform.position) / idealDis;
-            Debug.DrawLine(transform.position,cursorPos,Color.green);
+            // strength = 1f;
+            Debug.DrawLine(transform.position,targetPos,Color.green);
 
         } else {
 
             strength = 1f;
-            Debug.DrawLine(transform.position,cursorPos,Color.red);
+            Debug.DrawLine(transform.position,targetPos,Color.red);
 
         }
         
-        Debug.Log(strength);
+        //Debug.Log(strength);
 
-
-        Vector3 dir = Vector3.RotateTowards(transform.forward,target.forward,singleStep,0.0f);
-
-        rb.AddForce(dir * thrust * strength,ForceMode.VelocityChange);
+        rb.AddForce(transform.forward * thrust * strength,ForceMode.VelocityChange);
 
     }
 }

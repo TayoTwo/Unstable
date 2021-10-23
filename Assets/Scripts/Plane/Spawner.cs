@@ -33,7 +33,7 @@ public class Spawner : MonoBehaviour
 
     void SpawnObstacles(){
 
-        Vector3 spawnPos = new Vector3(0,Random.Range(-range,range) ,0);
+        Vector3 spawnPos = new Vector3(0,0,Random.Range(-range,range));
 
         Instantiate(objs[0],transform.position + spawnPos,Quaternion.identity);
 
