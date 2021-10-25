@@ -8,6 +8,8 @@ public class Spawner : MonoBehaviour
     public float range;
     public float spawnTime;
 
+    public float rateOfDecrease;
+
     public List<GameObject> objs = new List<GameObject>();
 
     // Start is called before the first frame update
@@ -25,6 +27,8 @@ public class Spawner : MonoBehaviour
             yield return new WaitForSeconds(spawnTime);
             
             SpawnObstacles();
+
+            spawnTime *= rateOfDecrease;
 
         }
 

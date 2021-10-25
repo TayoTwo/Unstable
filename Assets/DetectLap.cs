@@ -25,27 +25,23 @@ public class DetectLap : MonoBehaviour
 
     public void CheckTriggerCount(){
 
-        int triggersFlagged = 0;
+        bool allTriggered = true;
 
         for(int i = 0;i <= 3;i++){
 
-            if(triggers[i].flagged){
+            if(!triggers[i].flagged){
 
-                triggersFlagged++;
+                allTriggered = false;
 
             }
 
         }
 
-        if(triggersFlagged == 4){
+        if(allTriggered){
 
             Debug.Log("FULL LAP");
             scoreManager.UpdateScore();
             Destroy(gameObject);
-
-        } else {
-
-            Debug.Log("Triggers flagged: " + triggersFlagged );
 
         }
 

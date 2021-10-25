@@ -56,7 +56,7 @@ public class MoveToCursor : MonoBehaviour
         
         dir = targetPos - transform.position;
 
-        Debug.Log(targetPos);
+        //Debug.Log(targetPos);
         
         // calculate the Quaternion for the rotation
         Quaternion rot = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), rotSpeed * Time.fixedDeltaTime);
