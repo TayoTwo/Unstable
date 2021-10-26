@@ -7,8 +7,9 @@ public class Spawner : MonoBehaviour
 
     public float range;
     public float spawnTime;
+    public float bulletSpeed = 10;
 
-    public float rateOfDecrease;
+    public float rateOfIncrease;
 
     public List<GameObject> objs = new List<GameObject>();
 
@@ -28,7 +29,8 @@ public class Spawner : MonoBehaviour
             
             SpawnObstacles();
 
-            spawnTime *= rateOfDecrease;
+            spawnTime /= rateOfIncrease;
+            bulletSpeed *= rateOfIncrease;
 
         }
 
@@ -39,7 +41,9 @@ public class Spawner : MonoBehaviour
 
         Vector3 spawnPos = new Vector3(0,0,Random.Range(-range,range));
 
-        Instantiate(objs[0],transform.position + spawnPos,Quaternion.identity);
+        GameObject bull = (GameObject)Instantiate(objs[0],transform.position + spawnPos,Quaternion.identity);
+
+        bull.GetComponent<BlockMovement>().movSpeed = bulletSpeed;
 
     }
 
