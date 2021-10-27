@@ -8,6 +8,8 @@ public class DetectLap : MonoBehaviour
     public ScoreManager scoreManager;
     public Trigger[] triggers = new Trigger[4];
 
+    public bool randomTriggAmount = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +29,7 @@ public class DetectLap : MonoBehaviour
 
         bool allTriggered = true;
 
-        for(int i = 0;i <= 3;i++){
+        for(int i = 0;i < triggers.Length;i++){
 
             if(!triggers[i].flagged){
 

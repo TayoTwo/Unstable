@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &187751353
 Transform:
   m_ObjectHideFlags: 0
@@ -237,7 +237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1927207113
 Transform:
   m_ObjectHideFlags: 0
@@ -659,7 +659,7 @@ GameObject:
   - component: {fileID: 6711390447819350137}
   - component: {fileID: 1941552329}
   m_Layer: 0
-  m_Name: Node
+  m_Name: Missile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -742,9 +742,8 @@ MonoBehaviour:
   scoreManager: {fileID: 0}
   triggers:
   - {fileID: 1941552333}
-  - {fileID: 1941552332}
   - {fileID: 1941552334}
-  - {fileID: 1941552331}
+  randomTriggAmount: 0
 --- !u!1 &6837210891322418173
 GameObject:
   m_ObjectHideFlags: 0

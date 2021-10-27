@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour
     {
 
         score.text = scoreManager.currentScore.ToString();
-        highScore.text = "Record - " + PlayerPrefs.GetInt("highScore").ToString();
+        highScore.text = "Best - " + PlayerPrefs.GetInt("highScore").ToString();
         
     }
 }
