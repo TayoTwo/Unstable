@@ -18,6 +18,8 @@ public class MoveToCursor : MonoBehaviour
 
     Rigidbody rb;
 
+    float mousePressed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,13 +34,20 @@ public class MoveToCursor : MonoBehaviour
         cursorPos.z = Camera.main.transform.position.y;
         cursorPos = Camera.main.ScreenToWorldPoint(cursorPos);
         targetPos = new Vector3(cursorPos.x,transform.position.y,cursorPos.z);
+
+        mousePressed = Input.GetAxisRaw("Fire1");
         
     }
 
     void FixedUpdate() {
-        
-        Move();
-        RotateToCursor();
+
+        if(mousePressed == 1){
+         
+            Move();
+            RotateToCursor();
+
+        }
+
 
     }
 

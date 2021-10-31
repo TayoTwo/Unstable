@@ -7,23 +7,37 @@ public class Trigger : MonoBehaviour
 
     public bool flagged;
 
-    MeshRenderer renderer;
+    public GameObject fireEffect;
+    public AudioClip audioClip;
+
+    public AudioSource audioSource;
+
+    MeshRenderer rend;
 
     void Start(){
 
-        renderer = GetComponent<MeshRenderer>();
 
     }
+
 
     void OnTriggerEnter(Collider other) {
         
         if(other.gameObject.tag == "Player"){
 
-            flagged = true;
-            renderer.enabled = false;
-            gameObject.GetComponentInParent<DetectLap>().CheckTriggerCount();
+             OnTriggered();
 
         }
+
+    }
+
+    void OnTriggered(){
+
+        flagged = true;
+        audioSource.PlayOneShot(audioClip);
+        gameObject.GetComponentInParent<Alien>().CheckTriggerCount();
+        GameObject obj = (GameObject)Instantiate(fireEffect,transform.position,Quaternion.Euler(0,90,0));
+        obj.transform.parent = transform.parent;
+        gameObject.SetActive(false);
 
     }
 }

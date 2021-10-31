@@ -5,19 +5,11 @@ using UnityEngine;
 public class DetectLap : MonoBehaviour
 {
 
-    public ScoreManager scoreManager;
-    public Trigger[] triggers = new Trigger[4];
 
-    public bool randomTriggAmount = false;
+    
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-        scoreManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreManager>();
-        
-    }
+  
 
     // Update is called once per frame
     void Update()
@@ -25,27 +17,5 @@ public class DetectLap : MonoBehaviour
         
     }
 
-    public void CheckTriggerCount(){
-
-        bool allTriggered = true;
-
-        for(int i = 0;i < triggers.Length;i++){
-
-            if(!triggers[i].flagged){
-
-                allTriggered = false;
-
-            }
-
-        }
-
-        if(allTriggered){
-
-            Debug.Log("FULL LAP");
-            scoreManager.UpdateScore();
-            Destroy(gameObject);
-
-        }
-
-    }
+    
 }

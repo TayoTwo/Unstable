@@ -7,17 +7,26 @@ public class Spawner : MonoBehaviour
 
     public float range;
     public float spawnTime;
+    
+    public float minSpawnTime = 1; 
     public float bulletSpeed = 10;
 
-    public float rateOfIncrease;
+    public float difficulty;
+    public float difficultyRate;
+
 
     public List<GameObject> objs = new List<GameObject>();
+    public int[] difficultySpikes = new int[2];
+
+    ScoreManager scoreManager;
+    int objNum;
 
     // Start is called before the first frame update
     // Update is called once per frame
     void Start(){
 
         StartCoroutine(SpawnTimer());
+        scoreManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreManager>();
         
     }
 
@@ -29,8 +38,16 @@ public class Spawner : MonoBehaviour
             
             SpawnObstacles();
 
-            spawnTime /= rateOfIncrease;
-            bulletSpeed *= rateOfIncrease;
+            spawnTime /= difficulty;
+            bulletSpeed *= difficulty;
+
+            difficulty += difficultyRate;
+
+            if(spawnTime < minSpawnTime){
+
+                spawnTime = minSpawnTime;
+
+            }
 
         }
 
@@ -41,9 +58,25 @@ public class Spawner : MonoBehaviour
 
         Vector3 spawnPos = new Vector3(0,0,Random.Range(-range,range));
 
-        GameObject bull = (GameObject)Instantiate(objs[0],transform.position + spawnPos,Quaternion.identity);
+        int index = 0;
 
-        bull.GetComponent<BlockMovement>().movSpeed = bulletSpeed;
+        for(int i = 0;i < difficultySpikes.Length;i++){
+
+            if(scoreManager.currentScore >= difficultySpikes[i]){
+
+                index = i;
+
+            }
+
+        }
+
+        Debug.Log(index);
+
+        objNum = Random.Range(0,index + 1);
+
+        GameObject bull = (GameObject)Instantiate(objs[objNum],transform.position + spawnPos,Quaternion.identity);
+
+        bull.GetComponent<Alien>().movSpeed = bulletSpeed;
 
     }
 

@@ -9,7 +9,8 @@ public class Despawner : MonoBehaviour
 
         if(collider.gameObject.tag != "Player"){
 
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().LoseHealth();
+            collider.gameObject.GetComponent<Alien>().DestroySelf();
 
         }
 
