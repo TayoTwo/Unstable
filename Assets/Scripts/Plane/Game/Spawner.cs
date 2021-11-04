@@ -18,6 +18,8 @@ public class Spawner : MonoBehaviour
     public List<GameObject> objs = new List<GameObject>();
     public int[] difficultySpikes = new int[2];
 
+    public bool gameStarted;
+
     ScoreManager scoreManager;
     int objNum;
 
@@ -25,12 +27,32 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Start(){
 
-        StartCoroutine(SpawnTimer());
+        #if UNITY_WEBGL
+        Application.targetFrameRate = 60;
+        #endif
+        
         scoreManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreManager>();
         
     }
 
-    IEnumerator SpawnTimer(){
+    public void StartGame(){
+
+        gameStarted = true;
+
+    }
+
+    void Update() {
+
+        if(gameStarted){
+
+            StartCoroutine(SpawnTimer());
+            gameStarted = false;
+
+        }
+        
+    }
+
+    public IEnumerator SpawnTimer(){
 
         while(true){
 

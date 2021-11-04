@@ -10,6 +10,7 @@ public class MoveToCursor : MonoBehaviour
 
     
     public float idealDis;
+    public bool mainMenu;
     //public Transform target;
     Vector3 cursorPos;
     Vector3 targetPos;
@@ -19,6 +20,8 @@ public class MoveToCursor : MonoBehaviour
     Rigidbody rb;
 
     float mousePressed;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +44,7 @@ public class MoveToCursor : MonoBehaviour
 
     void FixedUpdate() {
 
-        if(mousePressed == 1){
+        if(mousePressed == 1 || mainMenu){
          
             Move();
             RotateToCursor();
