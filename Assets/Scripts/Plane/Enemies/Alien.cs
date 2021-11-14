@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Alien : MonoBehaviour
 {
 
+    public int id;
     public float movSpeed = 5;
 
     public float maxSpeed = 15;
@@ -23,8 +24,7 @@ public class Alien : MonoBehaviour
     Rigidbody rb;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start(){
 
         rb = GetComponent<Rigidbody>();
 

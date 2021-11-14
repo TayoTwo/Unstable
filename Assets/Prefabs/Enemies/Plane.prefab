@@ -592,6 +592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fd62ca5ed1b124faf313ad2965f015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 1
   movSpeed: 3
   maxSpeed: 6
   scoreManager: {fileID: 0}
