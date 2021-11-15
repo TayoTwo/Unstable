@@ -5,12 +5,13 @@ using UnityEngine;
 public class MoveToCursor : MonoBehaviour
 {
 
+    //Forward force put on the player
     public float thrust;
+    //How fast the player will rotate towards the cursor
     public float rotSpeed;
 
-    
     public float idealDis;
-    public bool mainMenu;
+
     //public Transform target;
     Vector3 cursorPos;
     Vector3 targetPos;
@@ -21,74 +22,58 @@ public class MoveToCursor : MonoBehaviour
 
     float mousePressed;
 
-
-
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start(){
 
         rb = GetComponent<Rigidbody>();
         
     }
-
+    
     void Update() {
-
+        //Find the cursor’s position/ Receive mouse inputs
         cursorPos = Input.mousePosition;
         cursorPos.z = Camera.main.transform.position.y;
         cursorPos = Camera.main.ScreenToWorldPoint(cursorPos);
         targetPos = new Vector3(cursorPos.x,transform.position.y,cursorPos.z);
 
-        mousePressed = Input.GetAxisRaw("Fire1");
-        
+        mousePressed = Input.GetAxisRaw("Fire1"); 
     }
 
     void FixedUpdate() {
-
-        if(mousePressed == 1 || mainMenu){
-         
+        //Whilst the LMB is being pressed move and rotate the player
+        if(mousePressed == 1){
             Move();
             RotateToCursor();
-
         }
-
 
     }
 
     void RotateToCursor(){
-
-        // // The step size is equal to speed times frame time.
-        
-        // float singleStep = rotSpeed * Time.fixedDeltaTime;
-        // Vector3 dir = Vector3.RotateTowards(transform.forward,target.forward,singleStep,0.0f);
-
-        // Draw a ray pointing at our target in
-        //Debug.DrawRay(transform.position, dir, Color.red);
-
-        // Calculate a rotation a step closer to the target and applies rotation to this object
-        
+            
+        //Calculate the vector between the two positions
         dir = targetPos - transform.position;
-
-        //Debug.Log(targetPos);
-        
-        // calculate the Quaternion for the rotation
+            
+        //Calculate the Quaternion for the rotation
         Quaternion rot = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), rotSpeed * Time.fixedDeltaTime);
- 
-        //Apply the rotation 
-        transform.rotation = rot; 
-
+    
+        //Apply the rotation
+        transform.rotation = rot;
         transform.eulerAngles = new Vector3(0,transform.eulerAngles.y,0);
 
     }
 
     void Move(){
-
+        //What percentage of our thrust to use
         float strength;
+        //Distance between the player and the cursor
         float dis = Vector3.Distance(targetPos,transform.position);
 
+        //Check if the player is "out of range" of the cursor
+        //If the player is outside of our ideal distance then use 100% of the thrust...
+        //...otherwise apply a percent based on the distance from the mouse.
         if(dis < idealDis){
 
             strength = Vector3.Distance(targetPos,transform.position) / idealDis;
-            // strength = 1f;
             Debug.DrawLine(transform.position,targetPos,Color.green);
 
         } else {
@@ -97,10 +82,8 @@ public class MoveToCursor : MonoBehaviour
             Debug.DrawLine(transform.position,targetPos,Color.red);
 
         }
-        
-        //Debug.Log(strength);
-
+        //Change our velocity based on our previous calculations
         rb.AddForce(transform.forward * thrust * strength,ForceMode.VelocityChange);
-
     }
+
 }
