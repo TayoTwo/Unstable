@@ -18,16 +18,21 @@ public class Spawner : MonoBehaviour
     //Plane is 1
     public List<GameObject> objs = new List<GameObject>();
 
-    //[0][3][6]
+    //A pattern is represented by 9 digits 
     //[1][4][7]
     //[2][5][8]
+    //[3][6][9]
+    //With their value corresponding to the ID of an object, -1 means blank
+    //In this example the pattern is full of Bombs
+    //[1][1][1]
+    //[1][1][1]
+    //[1][1][1]
     public List<string> patterns = new List<string>();
 
     //Distance between spawns
     public float unitLength = 10;
-
-
     public int[] difficultySpikes = new int[2];
+    //Check if the game has started
     public bool gameStarted;
     ScoreManager scoreManager;
     int objNum;
@@ -87,60 +92,63 @@ public class Spawner : MonoBehaviour
 
     void SpawnPatterns(){
 
-        Vector3 center = new Vector3(0,0,Random.Range(-range,range));
+        //Current position to spawn an object
         Vector3 spawnPos = new Vector3(0,0,0);
+        //Current pattern
         char[] pattern;
-        
+        //Record how far along in the pattern we are
         int pos = 0;
-    
-        int index = 0;
+        //The range of patterns we can spawn
+        int range = 0;
 
+        //Increase the pool of enemies we can spawn if the player reaches above a certain score
         for(int i = 0;i < difficultySpikes.Length;i++){
 
             if(scoreManager.currentScore >= difficultySpikes[i]){
 
-                index = i;
+                range = i;
 
             }
 
         } 
-
-        //Debug.Log(index);
-
-        patternNum = Random.Range(0,index + 1);
-
+        //Randomly choose a pattern to generate
+        patternNum = Random.Range(0,range + 1);
         pattern = patterns[patternNum].ToCharArray();
 
+        //Move down the grid then move to the next column
         for(int x = 0;x < 3;x++){
 
             for(int y = 0;y < 3;y++){
-
+                //Check what needs to be spawned in at this position in the pattern
                 int objIndex = (int)(pattern[pos]-'0') - 1;
 
+                //Spawn the an object if theres not a blank
                 if(objIndex > -1){
-
+                    //[1][4][7]
+                    //[2][5][8]
+                    //[3][6][9]
+                    //Move the grid down so that object '5' is at the center
                     spawnPos = new Vector3(x-1,0,y-1) * unitLength;
-                    
-                    GameObject alien = (GameObject)Instantiate(objs[objIndex],transform.position + spawnPos,Quaternion.identity);
-        alien.GetComponent<Alien>().movSpeed = bulletSpeed;
+                    //Spawn the pattern
+                    GameObject parent = (GameObject)Instantiate(objs[objIndex],transform.position + spawnPos,Quaternion.identity);
+                    //Set the speed of each object in the pattern
+                    Alien[] aliens = parent.GetComponentsInChildren<Alien>();
+                    for(int i = 0; i < aliens.Length;i++){
+
+                        aliens[i].movSpeed = bulletSpeed;
+
+                    }
 
                 }
 
+                //Increment our position along the pattern
                 pos++;
 
             }
 
         }
 
-        //Debug.Log(pos);
                          
-    }
-
-
-    void SpawnPattern(string objects){
-
-
-
     }
 
 }
