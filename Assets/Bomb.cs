@@ -16,8 +16,6 @@ public class Bomb : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         dir = Random.Range(0,2);
-        Debug.Log(torque);
-
         
     }
 

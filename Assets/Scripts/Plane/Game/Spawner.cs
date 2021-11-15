@@ -13,12 +13,22 @@ public class Spawner : MonoBehaviour
     public float difficulty;
     public float difficultyRate;
 
+    //ObjectIDs
+    //Bomb is 0
+    //Plane is 1
     public List<GameObject> objs = new List<GameObject>();
-    public List<GameObject> patterns = new List<GameObject>();
-    public int[] difficultySpikes = new int[2];
-    public bool  patternMode;
-    public bool gameStarted;
 
+    //[0][3][6]
+    //[1][4][7]
+    //[2][5][8]
+    public List<string> patterns = new List<string>();
+
+    //Distance between spawns
+    public float unitLength = 10;
+
+
+    public int[] difficultySpikes = new int[2];
+    public bool gameStarted;
     ScoreManager scoreManager;
     int objNum;
     int patternNum;
@@ -33,8 +43,6 @@ public class Spawner : MonoBehaviour
         
         scoreManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreManager>();
 
-        SpawnPatterns();
-        
     }
 
     public void StartGame(){
@@ -60,16 +68,7 @@ public class Spawner : MonoBehaviour
 
             yield return new WaitForSeconds(spawnTime);
             
-            if(!patternMode){
-
-                SpawnObstacles();
-
-            } else {
-
-                SpawnPatterns();
-
-            }
-
+            SpawnPatterns();
 
             spawnTime /= difficulty;
             bulletSpeed *= difficulty;
@@ -86,38 +85,14 @@ public class Spawner : MonoBehaviour
 
     }
 
-    void SpawnObstacles(){
-
-        Vector3 spawnPos = new Vector3(0,0,Random.Range(-range,range));
-
-        int index = 0;
-
-        for(int i = 0;i < difficultySpikes.Length;i++){
-
-            if(scoreManager.currentScore >= difficultySpikes[i]){
-
-                index = i;
-
-            }
-
-        }
-
-        //Debug.Log(index);
-
-        objNum = Random.Range(0,index + 1);
-
-        GameObject bull = (GameObject)Instantiate(objs[objNum],transform.position + spawnPos,Quaternion.identity);
-
-        bull.GetComponent<Alien>().movSpeed = bulletSpeed;
-
-    }
-
     void SpawnPatterns(){
 
-        Vector3 spawnPos = new Vector3(0,0,Random.Range(-range,range));
+        Vector3 center = new Vector3(0,0,Random.Range(-range,range));
+        Vector3 spawnPos = new Vector3(0,0,0);
+        char[] pattern;
         
-        List<Alien> aliens = new List<Alien>();
-
+        int pos = 0;
+    
         int index = 0;
 
         for(int i = 0;i < difficultySpikes.Length;i++){
@@ -128,17 +103,43 @@ public class Spawner : MonoBehaviour
 
             }
 
-        }
+        } 
 
         //Debug.Log(index);
 
         patternNum = Random.Range(0,index + 1);
 
+        pattern = patterns[patternNum].ToCharArray();
+
+        for(int x = 0;x < 3;x++){
+
+            for(int y = 0;y < 3;y++){
+
+                int objIndex = (int)(pattern[pos]-'0') - 1;
+
+                if(objIndex > -1){
+
+                    spawnPos = new Vector3(x-1,0,y-1) * unitLength;
+                    
+                    GameObject alien = (GameObject)Instantiate(objs[objIndex],transform.position + spawnPos,Quaternion.identity);
+        alien.GetComponent<Alien>().movSpeed = bulletSpeed;
+
+                }
+
+                pos++;
+
+            }
+
+        }
+
+        //Debug.Log(pos);
+                         
+    }
 
 
-        GameObject bull = (GameObject)Instantiate(patterns[patternNum],transform.position + spawnPos,Quaternion.identity);
-    
-        aliens = aliens.AddRange( bull.GetComponentsInChildren<Alien>() );
+    void SpawnPattern(string objects){
+
+
 
     }
 
